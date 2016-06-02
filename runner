@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Output colors
+NORMAL="\\033[0;39m"
+RED="\\033[1;31m"
+BLUE="\\033[1;34m"
+
+clr() {
+  rm -rf ./tmp
+}
+
+cache() {
+  npm config set registry http://127.0.0.1:8080/
+}
+
+setup() {
+  npm install
+  bower install --allow-root
+  bower --force update --allow-root
+}
+
+up() {
+  ember server --watcher polling
+  clr
+}
+
+dev() {
+  ln -s /packages/node_modules/* /usr/src/app/node_modules
+  ln -s /packages/bower_components/* /usr/src/app/bower_components
+  ember server --watcher polling
+  clr
+}
+
+build() {
+  setup
+  ember build --environment production
+  clr
+}
+
+help() {
+  echo "-----------------------------------------------------------------------"
+  echo "                      Available commands                              -"
+  echo "-----------------------------------------------------------------------"
+  echo -e -n "$BLUE"
+  echo "   > up - Start ember without symbolic links"
+  echo "   > dev - Start ember server with symbolic links"
+  echo "   > clean - Remove tmp folder"
+  echo "   > setup - Install dependencies"
+  echo "   > help - Display this help"
+  echo -e -n "$NORMAL"
+  echo "-----------------------------------------------------------------------"
+}
+
+$*
