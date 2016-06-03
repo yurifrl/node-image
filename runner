@@ -46,6 +46,7 @@ help() {
   echo "   > dev - Start ember server with symbolic links"
   echo "   > clean - Remove tmp folder"
   echo "   > setup - Install dependencies"
+  echo "   > cache - Set cache in npm"
   echo "   > help - Display this help"
   echo -e -n "$NORMAL"
   echo "-----------------------------------------------------------------------"

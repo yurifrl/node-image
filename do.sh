@@ -3,6 +3,11 @@
 # run commands on a custom image
 
 if [ -f VERSION ]; then
+  # Output colors
+  NORMAL="\\033[0;39m"
+  RED="\\033[1;31m"
+  BLUE="\\033[1;34m"
+
   VERSION=$(cat VERSION)
   FOLDER_PATH='/home/yuri/workspace/js'
   NAME=$(basename "$PWD")
@@ -28,6 +33,7 @@ setup() {
 
 run() {
   docker run -ti --rm \
+    -e EMBER_ENV=development \
     -p 4200:4200 -p 49152:49152 \
     -v $(pwd):/usr/src/app \
     $(printf '\t-v %s\n' "${VOLUMES[@]}") \
@@ -57,7 +63,7 @@ remember() {
   echo "docker run --rm -ti -p 80:80 -p 443:443 gcr.io/yebo-project/$NAME:v$VERSION"
   echo "docker images | grep $NAME"
   echo "dg gcloud docker push gcr.io/yebo-project/$NAME:v$VERSION"
-  echo "dg kubectl rolling-update rede-compras --image=gcr.io/yebo-project/$NAME:v$VERSION"
+  echo "dg kubectl rolling-update $NAME --image=gcr.io/yebo-project/$NAME:v$VERSION"
 }
 
 retag() {
@@ -66,13 +72,32 @@ retag() {
 }
 
 tag() {
+  docker rmi gcr.io/yebo-project/$NAME:v$VERSION
   docker tag $NAME gcr.io/yebo-project/$NAME:v$VERSION
   docker tag $NAME gcr.io/yebo-project/$NAME
   docker images | grep $NAME
 }
 
 prod() {
-  docker run --rm -ti -p 80:80 -p 443:443 gcr.io/yebo-project/$NAME:v$VERSION
+  docker run --rm -ti -p 80:80 -p 443:443 gcr.io/yebo-project/$NAME:v$VERSION "$@"
+}
+
+help() {
+  echo "-----------------------------------------------------------------------"
+  echo "             Available commands (run in the SO)                       -"
+  echo "-----------------------------------------------------------------------"
+  echo -e -n "$BLUE"
+  echo "   > setup - Setup dependecies, create data containers and cache container"
+  echo "   > run - Proxy for the container"
+  echo "   > build-all - Build js and docker image"
+  echo "   > build - Build production container"
+  echo "   > remember - Print usefull commands"
+  echo "   > retag - Remove current tag"
+  echo "   > tag - Create tag based on current version"
+  echo "   > prod - Run production container"
+  echo "   > run help - To see commands availble inside container"
+  echo -e -n "$NORMAL"
+  echo "-----------------------------------------------------------------------"
 }
 
 $*
