@@ -22,7 +22,7 @@ else
   echo "Could not find a VERSION file"
 fi
 
-setup() {
+bootstrap() {
   docker rm -f node_modules
   docker rm -f bower_components
   docker rm -f cache
