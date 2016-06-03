@@ -31,10 +31,32 @@ bootstrap() {
   docker run --name cache -d -e PORT=8080 -p 8080:80 tswicegood/npm-cache
 }
 
-run() {
+up() {
   docker run -ti --rm \
     -e EMBER_ENV=development \
     -p 4200:4200 -p 49152:49152 \
+    -v $(pwd):/usr/src/app \
+    $(printf '\t-v %s\n' "${VOLUMES[@]}") \
+    --volumes-from "node_modules" \
+    --volumes-from "bower_components" \
+    yurifl/work up
+}
+
+dev() {
+  docker run -ti --rm \
+    -e EMBER_ENV=development \
+    -p 4200:4200 -p 49152:49152 \
+    -v $(pwd):/usr/src/app \
+    $(printf '\t-v %s\n' "${VOLUMES[@]}") \
+    --volumes-from "node_modules" \
+    --volumes-from "bower_components" \
+    yurifl/work dev
+}
+
+
+run() {
+  docker run -ti --rm \
+    -e EMBER_ENV=development \
     -v $(pwd):/usr/src/app \
     $(printf '\t-v %s\n' "${VOLUMES[@]}") \
     --volumes-from "node_modules" \
