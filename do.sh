@@ -29,14 +29,6 @@ bootstrap() {
   docker run --name node_modules -d yurifl/node_modules
   docker run --name bower_components -d yurifl/bower_components
   docker run --name cache -d -e PORT=8080 -p 8080:80 tswicegood/npm-cache
-
-  docker run -ti --rm \
-    -e EMBER_ENV=development \
-    -v $(pwd):/usr/src/app \
-    $(printf '\t-v %s\n' "${VOLUMES[@]}") \
-    --volumes-from "node_modules" \
-    --volumes-from "bower_components" \
-    yurifl/work build-full
 }
 
 up() {
