@@ -29,6 +29,14 @@ bootstrap() {
   docker run --name node_modules -d yurifl/node_modules
   docker run --name bower_components -d yurifl/bower_components
   docker run --name cache -d -e PORT=8080 -p 8080:80 tswicegood/npm-cache
+
+  docker run -ti --rm \
+    -e EMBER_ENV=development \
+    -v $(pwd):/usr/src/app \
+    $(printf '\t-v %s\n' "${VOLUMES[@]}") \
+    --volumes-from "node_modules" \
+    --volumes-from "bower_components" \
+    yurifl/work build-full
 }
 
 up() {
@@ -42,18 +50,6 @@ up() {
     yurifl/work up
 }
 
-dev() {
-  docker run -ti --rm \
-    -e EMBER_ENV=development \
-    -p 4200:4200 -p 49152:49152 \
-    -v $(pwd):/usr/src/app \
-    $(printf '\t-v %s\n' "${VOLUMES[@]}") \
-    --volumes-from "node_modules" \
-    --volumes-from "bower_components" \
-    yurifl/work dev
-}
-
-
 run() {
   docker run -ti --rm \
     -e EMBER_ENV=development \
@@ -64,7 +60,17 @@ run() {
     yurifl/work "$@"
 }
 
-build-all() {
+build-full() {
+  docker run -ti --rm \
+    -v $(pwd):/usr/src/app \
+    --volumes-from "node_modules" \
+    --volumes-from "bower_components" \
+    yurifl/work build-full
+
+  docker build -t $NAME .
+}
+
+build() {
   docker run -ti --rm \
     -v $(pwd):/usr/src/app \
     --volumes-from "node_modules" \
@@ -74,12 +80,8 @@ build-all() {
   docker build -t $NAME .
 }
 
-build() {
-  docker build -t $NAME .
-}
-
 remember() {
-  echo 'do build-all'
+  echo 'do build'
   echo "docker tag $NAME gcr.io/yebo-project/$NAME:v$VERSION"
   echo "docker tag $NAME gcr.io/yebo-project/$NAME"
   echo "docker run --rm -ti -p 80:80 -p 443:443 gcr.io/yebo-project/$NAME:v$VERSION"
@@ -88,16 +90,14 @@ remember() {
   echo "dg kubectl rolling-update $NAME --image=gcr.io/yebo-project/$NAME:v$VERSION"
 }
 
-retag() {
-  docker rmi gcr.io/yebo-project/$NAME:v$VERSION
-  docker images | grep $NAME
-}
-
 tag() {
   docker rmi gcr.io/yebo-project/$NAME:v$VERSION
   docker tag $NAME gcr.io/yebo-project/$NAME:v$VERSION
   docker tag $NAME gcr.io/yebo-project/$NAME
   docker images | grep $NAME
+  echo 'do prod'
+  echo "dg gcloud docker push gcr.io/yebo-project/$NAME:v$VERSION"
+  echo "dg kubectl rolling-update $NAME --image=gcr.io/yebo-project/$NAME:v$VERSION"
 }
 
 prod() {
@@ -109,12 +109,11 @@ help() {
   echo "             Available commands (run in the SO)                       -"
   echo "-----------------------------------------------------------------------"
   echo -e -n "$BLUE"
-  echo "   > setup - Setup dependecies, create data containers and cache container"
+  echo "   > bootstrap - Setup dependecies, create data containers and cache container"
   echo "   > run - Proxy for the container"
-  echo "   > build-all - Build js and docker image"
-  echo "   > build - Build production container"
+  echo "   > build-full - Build js and docker image"
+  echo "   > build - Compile JS and Build container"
   echo "   > remember - Print usefull commands"
-  echo "   > retag - Remove current tag"
   echo "   > tag - Create tag based on current version"
   echo "   > prod - Run production container"
   echo "   > run help - To see commands availble inside container"

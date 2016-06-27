@@ -24,17 +24,25 @@ up() {
   clr
 }
 
-dev() {
-  ln -s /packages/node_modules/* /usr/src/app/node_modules
-  ln -s /packages/bower_components/* /usr/src/app/bower_components
-  ember server --watcher polling
+build-full() {
+  setup
+  ember build --environment production
   clr
 }
 
 build() {
-  setup
   ember build --environment production
   clr
+}
+
+dev() {
+  rm -rf /usr/src/app/node_modules/yebo-ember-auth
+  rm -rf /usr/src/app/node_modules/yebo-ember-checkouts
+  rm -rf /usr/src/app/node_modules/yebo-ember-core
+  rm -rf /usr/src/app/node_modules/yebo-ember-storefront
+  rm -rf /usr/src/app/bower_components/yebo_sdk
+  ln -sf /packages/node_modules/* /usr/src/app/node_modules
+  ln -sf /packages/bower_components/* /usr/src/app/bower_components
 }
 
 help() {
@@ -43,8 +51,10 @@ help() {
   echo "-----------------------------------------------------------------------"
   echo -e -n "$BLUE"
   echo "   > up - Start ember without symbolic links"
+  echo "   > build - Run build script"
+  echo "   > build-full - Run build script and fetch dependencies"
   echo "   > dev - Start ember server with symbolic links"
-  echo "   > clean - Remove tmp folder"
+  echo "   > clr - Remove tmp folder"
   echo "   > setup - Install dependencies"
   echo "   > cache - Set cache in npm"
   echo "   > help - Display this help"
