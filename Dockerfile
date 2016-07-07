@@ -14,6 +14,7 @@ RUN apt-get install -y python2.7-dev
 
 # Install dev dependencies
 RUN npm install -g phantomjs
+RUN npm install -g gulp
 
 # install watchman
 RUN \

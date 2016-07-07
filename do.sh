@@ -80,6 +80,9 @@ remember() {
   echo "docker images | grep $NAME"
   echo "dg gcloud docker push gcr.io/yebo-project/$NAME:v$VERSION"
   echo "dg kubectl rolling-update $NAME --image=gcr.io/yebo-project/$NAME:v$VERSION"
+  echo 'to staging:'
+  echo "dg gcloud docker push gcr.io/yebo-project/$NAME"
+  echo "dg kubectl rolling-update staging --image=gcr.io/yebo-project/$NAME"
 }
 
 tag() {
@@ -90,6 +93,9 @@ tag() {
   echo 'do prod'
   echo "dg gcloud docker push gcr.io/yebo-project/$NAME:v$VERSION"
   echo "dg kubectl rolling-update $NAME --image=gcr.io/yebo-project/$NAME:v$VERSION"
+  echo 'to staging:'
+  echo "dg gcloud docker push gcr.io/yebo-project/$NAME"
+  echo "dg kubectl rolling-update staging --image=gcr.io/yebo-project/$NAME"
 }
 
 prod() {
