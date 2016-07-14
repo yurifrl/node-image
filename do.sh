@@ -72,6 +72,13 @@ build() {
   docker build -t $NAME .
 }
 
+b() {
+  docker build -t $NAME .
+  docker rmi gcr.io/yebo-project/$NAME:v$VERSION
+  docker tag $NAME gcr.io/yebo-project/$NAME:v$VERSION
+  docker tag $NAME gcr.io/yebo-project/$NAME
+}
+
 remember() {
   echo 'do build'
   echo "docker tag $NAME gcr.io/yebo-project/$NAME:v$VERSION"
