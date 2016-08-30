@@ -27,7 +27,7 @@ RUN \
   make install
 
 # Note: npm is v2.7.6
-RUN npm install -g ember-cli --allow-root
+RUN npm install -g ember-cli@2.7.0 --allo-root
 RUN npm install -g bower
 
 RUN mkdir -p /packages/node_modules

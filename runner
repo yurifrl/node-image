@@ -30,6 +30,13 @@ build-full() {
   clr
 }
 
+build-dev() {
+  setup
+  dev
+  ember build --environment production
+  clr
+}
+
 build() {
   ember build --environment production
   clr

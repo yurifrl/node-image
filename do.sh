@@ -45,11 +45,22 @@ up() {
 run() {
   docker run -ti --rm \
     -e EMBER_ENV=development \
+    -p 4200:4200 -p 49152:49152 \
     -v $(pwd):/usr/src/app \
+    -v $HOME/.bin:/bins \
     $(printf '\t-v %s\n' "${VOLUMES[@]}") \
     --volumes-from "node_modules" \
     --volumes-from "bower_components" \
     yurifl/work "$@"
+}
+
+build-dev() {
+  docker run -ti --rm \
+    -v $(pwd):/usr/src/app \
+    $(printf '\t-v %s\n' "${VOLUMES[@]}") \
+    --volumes-from "node_modules" \
+    --volumes-from "bower_components" \
+    yurifl/work build-dev
 }
 
 build-full() {
