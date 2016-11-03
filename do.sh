@@ -25,10 +25,10 @@ fi
 bootstrap() {
   docker rm -f node_modules
   docker rm -f bower_components
-  docker rm -f cache
+  # docker rm -f cache
   docker run --name node_modules -d yurifl/node_modules
   docker run --name bower_components -d yurifl/bower_components
-  docker run --name cache -d -e PORT=8080 -p 8080:80 tswicegood/npm-cache
+  # docker run --name cache -d -e PORT=8080 -p 8080:80 tswicegood/npm-cache
 }
 
 up() {
