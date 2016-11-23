@@ -1,0 +1,18 @@
+version: '2'
+services:
+  web:
+    image: yurifl/node
+    command: start
+    ports:
+      - 4200:4200
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+      - bower_components:/app/bower_components
+
+volumes:
+  node_modules:
+    external: true
+  bower_components:
+    external: true
+
