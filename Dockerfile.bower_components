@@ -1,4 +1,0 @@
-FROM busybox
-
-VOLUME "/usr/src/app/bower_components"
-VOLUME "/app/bower_components"

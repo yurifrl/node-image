@@ -9,10 +9,6 @@ clr() {
   rm -rf ./tmp
 }
 
-cache() {
-  npm config set registry http://127.0.0.1:8080/
-}
-
 setup() {
   npm install
   bower install --allow-root
@@ -20,6 +16,11 @@ setup() {
 }
 
 up() {
+  ember server --watcher polling
+  clr
+}
+
+start() {
   ember server --watcher polling
   clr
 }
@@ -43,13 +44,13 @@ build() {
 }
 
 dev() {
-  rm -rf /usr/src/app/node_modules/yebo-ember-auth
-  rm -rf /usr/src/app/node_modules/yebo-ember-checkouts
-  rm -rf /usr/src/app/node_modules/yebo-ember-core
-  rm -rf /usr/src/app/node_modules/yebo-ember-storefront
-  rm -rf /usr/src/app/bower_components/yebo_sdk
-  ln -sf /packages/node_modules/* /usr/src/app/node_modules
-  ln -sf /packages/bower_components/* /usr/src/app/bower_components
+  rm -rf /app/node_modules/yebo-ember-auth
+  rm -rf /app/node_modules/yebo-ember-checkouts
+  rm -rf /app/node_modules/yebo-ember-core
+  rm -rf /app/node_modules/yebo-ember-storefront
+  rm -rf /app/bower_components/yebo_sdk
+  ln -sf /packages/node_modules/* /app/node_modules
+  ln -sf /packages/bower_components/* /app/bower_components
 }
 
 help() {
@@ -63,7 +64,6 @@ help() {
   echo "   > dev - Start ember server with symbolic links"
   echo "   > clr - Remove tmp folder"
   echo "   > setup - Install dependencies"
-  echo "   > cache - Set cache in npm"
   echo "   > help - Display this help"
   echo -e -n "$NORMAL"
   echo "-----------------------------------------------------------------------"

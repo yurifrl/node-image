@@ -25,17 +25,15 @@ fi
 bootstrap() {
   docker rm -f node_modules
   docker rm -f bower_components
-  # docker rm -f cache
   docker run --name node_modules -d yurifl/node_modules
   docker run --name bower_components -d yurifl/bower_components
-  # docker run --name cache -d -e PORT=8080 -p 8080:80 tswicegood/npm-cache
 }
 
 up() {
   docker run -ti --rm \
     -e EMBER_ENV=development \
     -p 4200:4200 -p 49152:49152 \
-    -v $(pwd):/usr/src/app \
+    -v $(pwd):/app \
     $(printf '\t-v %s\n' "${VOLUMES[@]}") \
     --volumes-from "node_modules" \
     --volumes-from "bower_components" \
@@ -46,7 +44,7 @@ run() {
   docker run -ti --rm \
     -e EMBER_ENV=development \
     -p 4200:4200 -p 49152:49152 \
-    -v $(pwd):/usr/src/app \
+    -v $(pwd):/app \
     -v $HOME/.bin:/bins \
     $(printf '\t-v %s\n' "${VOLUMES[@]}") \
     --volumes-from "node_modules" \
@@ -56,7 +54,7 @@ run() {
 
 build-dev() {
   docker run -ti --rm \
-    -v $(pwd):/usr/src/app \
+    -v $(pwd):/app \
     $(printf '\t-v %s\n' "${VOLUMES[@]}") \
     --volumes-from "node_modules" \
     --volumes-from "bower_components" \
@@ -65,7 +63,7 @@ build-dev() {
 
 build-full() {
   docker run -ti --rm \
-    -v $(pwd):/usr/src/app \
+    -v $(pwd):/app \
     --volumes-from "node_modules" \
     --volumes-from "bower_components" \
     yurifl/work build-full
@@ -75,7 +73,7 @@ build-full() {
 
 build() {
   docker run -ti --rm \
-    -v $(pwd):/usr/src/app \
+    -v $(pwd):/app \
     --volumes-from "node_modules" \
     --volumes-from "bower_components" \
     yurifl/work build
