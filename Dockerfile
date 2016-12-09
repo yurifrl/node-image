@@ -30,11 +30,7 @@ RUN \
 RUN npm install -g ember-cli@2.7.0 --allo-root
 RUN npm install -g bower
 
-WORKDIR /app
-
-VOLUME ["/app/node_modules", "/app/bower_components"]
-
-EXPOSE 4200
+EXPOSE 4200 49152
 
 COPY runner /bin/runner
 

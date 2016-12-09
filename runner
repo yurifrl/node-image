@@ -5,8 +5,22 @@ NORMAL="\\033[0;39m"
 RED="\\033[1;31m"
 BLUE="\\033[1;34m"
 
+drone-build() {
+  npm config set loglevel warn
+  npm install --quiet
+  bower install --allow-root --quiet
+  bower --force update --allow-root --quiet
+  ember build --environment production
+}
+
 clr() {
   rm -rf ./tmp
+  rm -rf ./if-you-need-to-delete-this-open-an-issue-async-disk-cache
+}
+
+start() {
+  ember server --watcher polling --environment development
+  clr
 }
 
 setup() {
@@ -15,30 +29,13 @@ setup() {
   bower --force update --allow-root
 }
 
-up() {
-  ember server --watcher polling
-  clr
-}
-
-start() {
-  ember server --watcher polling
+build() {
+  ember build --environment production
   clr
 }
 
 build-full() {
   setup
-  ember build --environment production
-  clr
-}
-
-build-dev() {
-  setup
-  dev
-  ember build --environment production
-  clr
-}
-
-build() {
   ember build --environment production
   clr
 }
@@ -58,11 +55,9 @@ help() {
   echo "                      Available commands                              -"
   echo "-----------------------------------------------------------------------"
   echo -e -n "$BLUE"
-  echo "   > up - Start ember without symbolic links"
+  echo "   > start - Start ember without symbolic links"
   echo "   > build - Run build script"
   echo "   > build-full - Run build script and fetch dependencies"
-  echo "   > dev - Start ember server with symbolic links"
-  echo "   > clr - Remove tmp folder"
   echo "   > setup - Install dependencies"
   echo "   > help - Display this help"
   echo -e -n "$NORMAL"
