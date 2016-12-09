@@ -1,0 +1,4 @@
+#!/bin/sh
+
+rm -rf ./tmp
+rm -rf ./if-you-need-to-delete-this-open-an-issue-async-disk-cache

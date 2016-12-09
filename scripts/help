@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Output colors
+NORMAL="\\033[0;39m"
+RED="\\033[1;31m"
+BLUE="\\033[1;34m"
+
+echo "-----------------------------------------------------------------------"
+echo "                      Available commands                              -"
+echo "-----------------------------------------------------------------------"
+echo -e -n "$BLUE"
+echo "   > build - Start ember without symbolic links"
+echo "   > build-full - Run build script"
+echo "   > dev - Run build script and fetch dependencies"
+echo "   > setup - Install dependencies"
+echo "   > help - Display this help"
+echo -e -n "$NORMAL"
+echo "-----------------------------------------------------------------------"
+

@@ -30,9 +30,13 @@ RUN \
 RUN npm install -g ember-cli@2.7.0 --allo-root
 RUN npm install -g bower
 
+COPY /scripts/* /tmp/scripts/
+RUN chmod +x /tmp/scripts
+RUN mv /tmp/scripts/* /bin/
+RUN rm -rf /tmp/scripts
+
+WORKDIR /app
 EXPOSE 4200 49152
 
-COPY runner /bin/runner
-
-ENTRYPOINT ["/bin/runner"]
+CMD ["build-and-fetch-deps"]
 

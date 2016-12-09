@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ember server --watcher polling --environment development
+cleanup

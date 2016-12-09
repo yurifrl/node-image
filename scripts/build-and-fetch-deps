@@ -1,0 +1,8 @@
+#!/bin/sh
+
+npm config set loglevel warn
+npm install --quiet
+bower install --allow-root --quiet
+bower --force update --allow-root --quiet
+ember build --environment production
+cleanup

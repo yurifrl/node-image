@@ -1,0 +1,9 @@
+#!/bin/sh
+
+rm -rf /app/node_modules/yebo-ember-auth
+rm -rf /app/node_modules/yebo-ember-checkouts
+rm -rf /app/node_modules/yebo-ember-core
+rm -rf /app/node_modules/yebo-ember-storefront
+rm -rf /app/bower_components/yebo_sdk
+ln -sf /packages/node_modules/* /app/node_modules
+ln -sf /packages/bower_components/* /app/bower_components
