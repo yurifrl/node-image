@@ -1,4 +1,5 @@
 #!/bin/sh
 
+EMBER_ENV=production
 ember build --environment production
 cleanup

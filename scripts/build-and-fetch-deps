@@ -1,7 +1,8 @@
 #!/bin/sh
 
+EMBER_ENV=production
 npm config set loglevel warn
-npm install --quiet
+npm -s install
 bower install --allow-root --quiet
 bower --force update --allow-root --quiet
 ember build --environment production
